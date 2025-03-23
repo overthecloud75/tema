@@ -1,0 +1,4 @@
+PRODUCTION_MODE = True
+
+# access_token 
+ACCESS_TOKEN_EXPIRE_MINUTES = 1440

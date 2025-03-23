@@ -1,0 +1,12 @@
+__pycache__/
+bin/
+include/
+lib/
+lib64
+csv/
+logs/
+
+pyvenv.cfg
+.gitignore
+CHANGELOG.md
+README.md
