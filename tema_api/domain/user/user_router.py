@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from database import get_db
 from .user_crud import *
 from .user_schema import *
+from configs import PROJECT_NAME, logger
 
 
 router = APIRouter(
@@ -50,3 +51,8 @@ async def delete_user(user_account: str, db: Session = Depends(get_db)) -> dict:
         return {'message': 'ok'}
     else:
         return {'message': 'there is not the user!'}
+
+@router.post('/subuser/add', response_model=SubUserResponse)
+async def add_sub_user(request: Request, user_form: SubUser, db: Session = Depends(get_db)) -> dict:
+    user = request.state.user
+    return create_sub_user(db, user_form, user)

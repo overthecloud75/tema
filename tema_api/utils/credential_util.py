@@ -6,14 +6,14 @@ from configs import SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES, logger
 
 
 def get_access_token(user):
-     # make access token
+    # make access token
     data = {
         'sub': user.user_account,
         'exp': datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     }
     return jwt.encode(data, SECRET_KEY, algorithm='HS256')
 
-def get_current_user(reqeust):
+def get_current_user(request):
     token = _get_authorization_bearer_token(request)
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])

@@ -51,7 +51,6 @@ async def log_requests(request: Request, call_next):
                 status_code=500,
                 content={'message': 'Internal Server Error'}
             )
-            response.headers['authorization'] = 'Bearer'
             get_access_logging(start_time, request, response)
         return response
 
@@ -63,9 +62,15 @@ async def log_requests(request: Request, call_next):
             status_code=401,
             content={'message': 'Could not validate credentials'}
         )
-        response.headers['authorization'] = 'Bearer'
     else:
-        response = await call_next(request)
+        try:
+            response = await call_next(request)
+        except Exception as e:
+            logger.error(e)
+            response = JSONResponse(
+                status_code=500,
+                content={'message': 'Internal Server Error'}
+            )
     get_access_logging(start_time, request, response)
     return response
 
